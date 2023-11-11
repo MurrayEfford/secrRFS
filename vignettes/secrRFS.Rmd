@@ -145,7 +145,7 @@ process affect overdispersion.
 parmlevels <- list(D = D, mu = 2^(0:5), scale = c(1e-04, 1, 2, 4, 8))
 RFSargs <- list (
     randomfn   = randomParents, 
-    nrepl      = 1000, 
+    nrepl      = 100, 
 	traps      = grid144, 
 	mask       = grid144mask, 
     detectfn   = 'HHN', 
