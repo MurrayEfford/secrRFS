@@ -2,7 +2,7 @@
 
 Spatially Explicit Capture-Recapture Random Field Simulator
 
-This package implements a simulation-based method for predicting overdispersion of $n$ when the distribution of animal activity centres follows a known Cox process (M\o ller and Waagepetersen 2004; Efford and Fletcher unpubl.). 
+This package implements a simulation-based method for predicting overdispersion of $n$ when the distribution of animal activity centres follows a known Cox process (Moller and Waagepetersen 2004; Efford and Fletcher unpubl.). 
 
 **secrRFS** depends on **secr** 4.6.5 or later. **RandomFields** (Schlather et al. 2015) and **spatstat** (Baddeley and Turner 2005) are required for some options.
 
@@ -26,7 +26,7 @@ Efford, M. G. (2023) secr: Spatially explicit capture--recapture models.
 Efford, M. G. and Fletcher, D. J. unpubl. Spatial overdispersion impacts 
 confidence intervals for population density estimated by spatially explicit capture--recapture.
 
-Moller, J., and Waagepetersen, R. P. (2004) Statistical inference and 
+Moller, J. and Waagepetersen, R. P. (2004) Statistical inference and 
 simulation for spatial point processes. Chapman & Hall/CRC.
 
 Saura, S. and Martinez-Millan, J. (2000) Landscape patterns simulation
