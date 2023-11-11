@@ -1,0 +1,19 @@
+citHeader("To cite package 'secrRFS' in publications use:")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+vers <- paste("R package version", meta$Version)
+url <- "https://GitHubpackage=ipsecr"
+
+bibentry(
+    bibtype = "Manual",
+    title = "secrRFS: Spatially Explicit Capture-Recapture Random Field Simulator",
+    author = c(person("Murray","Efford")),
+    year = year,
+    note = vers,
+    url = url,
+    textVersion =
+        paste("Efford, M. G. (", year,
+        "). secrRFS: Spatially Explicit Capture-Recapture Random Field Simulator. ",
+        vers, ". ", url, 
+        sep = "")
+)

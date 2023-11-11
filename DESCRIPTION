@@ -1,0 +1,25 @@
+Package: secrRFS
+Type: Package
+Title: Spatially Explicit Capture-Recapture Random Field Simulator
+Version: 0.0.0
+Date: 2023-11-11
+Description: SECR random field simulator.
+Authors@R: person("Murray", "Efford", 
+    email = "murray.efford@otago.ac.nz", 
+    role = c("aut","cre"), 
+    comment = c(ORCID = "0000-0001-5231-5184"))
+Depends: 
+    R (>= 3.5.0),
+    secr (>= 4.6.5)
+Imports:
+    parallel
+Suggests:
+    knitr, 
+    rmarkdown, 
+    spatstat (>= 3.0-2),
+    spatstat.geom,
+    spatstat.random,
+    RandomFields,
+    testthat
+VignetteBuilder: knitr, rmarkdown
+License: GPL (>= 2)

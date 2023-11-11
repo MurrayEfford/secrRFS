@@ -1,0 +1,203 @@
+---
+title: '**secrRFS** - SECR random field simulator'
+author: "Murray Efford"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 1
+  pdf_document: 
+    toc: yes
+    toc_depth: 1
+vignette: > 
+  %\VignetteIndexEntry{SECR random field simulator}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+header-includes: 
+   - \newcommand{\E}[1]{\mbox E (#1)}
+   - \renewcommand{\vec}[1]{\mathbf{#1}}
+---
+
+\vspace{12pt}
+
+# Introduction
+
+Spatial capture--recapture estimates population density from a sample of $n$ 
+marked individuals detected at an array of detectors. Density is treated as 
+the intensity of a point process where each point is the activity centre of 
+an individual. Overdispersion of $n$ relative to the expected variance 
+(Poisson or binomial) leads to poor coverage of confidence intervals for 
+density. This document demonstrates the use of **secrRFS** to simulate 
+overdispersion of $n$ from a known detection model and generating 
+process for the AC. 
+
+The generating process is assumed to be a Cox process i.e. an inhomogeneous 
+Poisson process (IHPP) in which the intensity surface varies stochastically 
+between realisations (M\o ller and Waagepetersen 2004). The Thomas cluster 
+process is treated as a Cox process with intensity surface defined by each 
+realisation of parent points. The conditional case (fixed number in known 
+area $A$) is not handled.
+
+The available generating processes are
+
+|Generating process|Source function| Parameters |
+|------------------|---------------|------------|
+Binary habitat mosaic | secr::randomHabitat | D, p, A
+Log-gaussian random field | RandomFields::RFsimulate | D, var, scale
+Thomas cluster process | spatstat.random::rThomas | D, mu, scale
+
+**secrRFS** requires version 4.6.5 or later of package **secr** (Efford 2023). 
+Packages RandomFields (Schlather et al. 2015)[^footnote1] and spatstat 
+(Baddeley and Turner 2005) are required respectively for  the log-gaussian 
+and Thomas process options.
+
+[^footnote1]:Package RandomFields is not currently on CRAN. It may be installed with this code:
+`install.packages("RandomFields", repos = c("https://spatstat.r-universe.dev", 
+   "https://cloud.r-project.org"))`
+
+# Theory
+
+We define the local density $D_a$ as
+$$
+D_a \equiv \frac{\int D(\vec x) \, p_\cdot (\vec x | \theta) \, d\vec x}{\int p_\cdot (\vec x | \theta) \, d\vec x}
+$$
+where $D(\vec x)$ is the intensity at $\vec x$ of one realisation and $p_\cdot(\vec x|\theta)$ is the probability that an AC at $\vec x$ will be detected at least once, given vector of detection parameters $\theta$.
+
+Values of $D_a$ are simulated by generating multiple realisations of $D(\vec x)$.
+
+Overdispersion is estimated as $c = \mbox{E}(n) \, \mbox{CV}^2(D_a) + 1.$
+
+# Simple example
+
+See [here](https://www.otago.ac.nz/density/pdfs/secr-overview.pdf) for an overview of 'secr'.
+
+```{r setup, message = FALSE, results = 'hide'}
+library(secrRFS)
+setNumThreads(10)   # adjust to number of available cores
+```
+
+```{r data}
+detectpar <- list(lambda0 = 0.5, sigma = 1)
+grid144 <- make.grid(12,12, detector = 'proximity', spacing = 2.0)
+grid144mask <- make.mask(grid144, spacing = 0.5, buffer = 4)
+D <- 256/maskarea(grid144mask)
+```
+
+```{r initial, eval = TRUE, cache = TRUE}
+RFS(
+	randomfn   = randomDensity,  
+	parm       = list(D = D, A = 0.5, p = 0.5),
+	nrepl      = 1000, 
+	traps      = grid144, 
+	mask       = grid144mask,
+	detectpar  = list(lambda0 = 0.5, sigma = 1),
+	noccasions = 5)
+```
+
+The result is a value for $c$ that may be used as a variance inflation factor.
+
+# Generating functions 
+
+Parameters are specific to the different generating functions.
+
+## `randomDensity`
+
+Random binary habitat mosaic. Saura and Martinez-Millan (2000).
+
+`rescale` parameter
+
+## `randomGaussian`
+
+Log-gaussian Cox process
+
+## `randomParent`
+
+Intensity from distribution of parents for a realisation of the Thomas process.
+
+```{r extra, eval = FALSE, echo = FALSE}
+RFS(randomfn = randomGaussian, nrepl = 1000, parm = list(D = 2844.44, var = 1, scale = 10))
+RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 1, scale = 2))
+RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 32, scale = 2))
+RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 2, scale = 0.001))
+
+RFS(randomfn = randomDensity,  nrepl = 1000, parm = list(D = 2844.44, A = 0.5, p = 0.5), ncores=10)
+RFS(randomfn = randomParents,  nrepl = 100, parm = list(D = 2844.44, mu = 2, scale = 0.001), ncores=10)
+RFS(randomfn = randomGaussian, nrepl = 1000, parm = list(D = 2844.44, var = 1, scale = 10), ncores=10)
+
+randomParents(grid144mask, parm = list(D = 2844.44, mu = 32, scale = 2), plt=T, border = 1)
+randomGaussian(grid144mask, parm = list(D = 2844.44, var = 1, scale = 10), plt=T, border = 1)
+
+D <- randomDensity(grid144mask,  parm = list(D = 2844.44, A = 0.5, p = 0.5), plt=T, border = 1, 
+				   breaks=c(0,10,10000), col=c('grey','white'), legend=F)
+pop <- sim.popn(D=D, grid144mask, model2D='IHP')
+plot(pop, add=T, frame = FALSE)
+plot(grid144, add=T, detpar=list(cex=0.6,pch=16,fg='red'))
+
+round(cmat(nrepl=1000, ncores=10),1)
+```
+
+# Parameter combinations
+
+The function `carray` makes it easy to see how varying parameters of the Cox 
+process affect overdispersion.
+
+```{r combinations, eval = TRUE, cache = TRUE}
+parmlevels <- list(D = D, mu = 2^(0:5), scale = c(1e-04, 1, 2, 4, 8))
+RFSargs <- list (
+    randomfn   = randomParents, 
+    nrepl      = 1000, 
+	traps      = grid144, 
+	mask       = grid144mask, 
+    detectfn   = 'HHN', 
+	detectpar  = detectpar, 
+    noccasions = 5, 
+	ncores     = 18)
+ca <- carray (parmlevels, RFSargs)
+round(ca,1)
+```
+
+# References
+
+Baddeley, A. and Turner, R. (2005) spatstat: An R package for analyzing spatial point
+  patterns. *Journal of Statistical Software* **12**, 1--42. DOI: 10.18637/jss.v012.i06
+
+Borchers, D. L. and Efford, M. G. (2008) Spatially explicit maximum likelihood methods for capture--recapture studies. *Biometrics* **64**, 377--385.
+
+Efford, M. G. (2023). secr: Spatially explicit capture--recapture models. R package version
+  4.6.5. https://CRAN.R-project.org/package=secr/
+  
+M\o ller, J., and Waagepetersen, R. P. (2004) Statistical inference and simulation for spatial point processes. Chapman & Hall/CRC.
+
+Saura, S. and Martinez-Millan, J. (2000) Landscape patterns simulation
+with a modified random clusters method. *Landscape Ecology*,
+**15**, 661--678.
+
+Schlather, M., Malinowski, A., Menck, P. J., Oesting, M. and Strokorb, K. 2015. Analysis, simulation and prediction of multivariate random fields with package RandomFields. *Journal of Statistical Software*, **63**, 1--25. URL https://www.jstatsoft.org/v63/i08/.
+  
+[secr-manual.pdf]: https://www.otago.ac.nz/density/pdfs/secr-manual.pdf
+[secr-overview.pdf]: https://www.otago.ac.nz/density/pdfs/secr-overview.pdf
+[secr-datainput.pdf]: https://www.otago.ac.nz/density/pdfs/secr-datainput.pdf
+[secr-densitysurfaces.pdf]: https://www.otago.ac.nz/density/pdfs/secr-densitysurfaces.pdf
+[secr-finitemixtures.pdf]: https://www.otago.ac.nz/density/pdfs/secr-finitemixtures.pdf
+[secr-habitatmasks.pdf]: https://www.otago.ac.nz/density/pdfs/secr-habitatmasks.pdf
+[secr-markresight.pdf]: https://www.otago.ac.nz/density/pdfs/secr-markresight.pdf
+[secr-models.pdf]: https://www.otago.ac.nz/density/pdfs/secr-models.pdf
+[secr-multisession.pdf]: https://www.otago.ac.nz/density/pdfs/secr-multisession.pdf
+[secr-noneuclidean.pdf]: https://www.otago.ac.nz/density/pdfs/secr-noneuclidean.pdf
+[secr-parameterisations.pdf]: https://www.otago.ac.nz/density/pdfs/secr-parameterisations.pdf
+[secr-polygondetectors.pdf]: https://www.otago.ac.nz/density/pdfs/secr-polygondetectors.pdf
+[secr-sound.pdf]: https://www.otago.ac.nz/density/pdfs/secr-sound.pdf
+[secr-spatialdata.pdf]: https://www.otago.ac.nz/density/pdfs/secr-spatialdata.pdf
+[secr-telemetry.pdf]: https://www.otago.ac.nz/density/pdfs/secr-telemetry.pdf
+[secr-tutorial.pdf]: https://www.otago.ac.nz/density/pdfs/secr-tutorial.pdf
+[secr-troubleshooting.pdf]: https://www.otago.ac.nz/density/pdfs/secr-troubleshooting.pdf
+[secr-varyingeffort.pdf]: https://www.otago.ac.nz/density/pdfs/secr-varyingeffort.pdf
+
+[secrdesign-vignette.pdf]: https://www.otago.ac.nz/density/pdfs/secrdesign-vignette.pdf
+[secrlinear-vignette.pdf]: https://CRAN.R-project.org/package=secrlinear/vignettes/secrlinear-vignette.pdf
+
+[secr-version4.pdf]: https://www.otago.ac.nz/density/pdfs/secr-version4.pdf
+
+[phidot]: http://www.phidot.org/forum/
+[secrgroup]: <https://groups.google.com/forum/#!forum/secrgroup>
+[CRAN]: https://cran.r-project.org/package=secr
