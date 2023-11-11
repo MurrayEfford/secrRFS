@@ -150,8 +150,7 @@ RFSargs <- list (
 	mask       = grid144mask, 
     detectfn   = 'HHN', 
 	detectpar  = detectpar, 
-    noccasions = 5, 
-	ncores     = 2)
+    noccasions = 5)
 ca <- carray (parmlevels, RFSargs)
 round(ca,1)
 ```
