@@ -73,7 +73,7 @@ See [here](https://www.otago.ac.nz/density/pdfs/secr-overview.pdf) for an overvi
 
 ```{r setup, message = FALSE, results = 'hide'}
 library(secrRFS)
-setNumThreads(2)   # adjust to number of available cores
+setNumThreads(4)   # adjust to number of available cores
 ```
 
 ```{r data}
@@ -84,9 +84,10 @@ D <- 256/maskarea(grid144mask)
 ```
 
 ```{r initial, eval = TRUE, cache = TRUE}
+parm1 <- list(D = D, A = 0.5, p = 0.5)
 RFS(
 	randomfn   = randomDensity,  
-	parm       = list(D = D, A = 0.5, p = 0.5),
+	parm       = parm1,
 	nrepl      = 1000, 
 	traps      = grid144, 
 	mask       = grid144mask,
@@ -98,43 +99,63 @@ The result is a value for $c$ that may be used as a variance inflation factor.
 
 # Generating functions 
 
-Parameters are specific to the different generating functions.
+Parameters are provided in the 'parm' argument whose interpretation is specific 
+to each generating function. In each case 'the 'parm' includes the global density D.
 
 ## `randomDensity`
 
-Random binary habitat mosaic. Saura and Martinez-Millan (2000).
+This function generates an intensity surface as a random binary habitat mosaic, following Saura and Martinez-Millan (2000) and the `randomHabitat` function in **secr**.
 
-`rescale` parameter
+Parameter 'A' (range 0--1) controls the habitat proportion, designated $f$ by Efford and Fletcher (unpubl.).
+
+Parameter 'p' controls fragmentation of the habitat patches. This is non-intuitive. Cluster size increases up to the 'percolation threshold' (about p $\approx 0.59$ in the default case; Saura and Martinez-Millan 2000 p.664).
+
+Parameter 'rescale' (default TRUE) determines whether within-patch density is scale by 1/A to maintain constant global expected density.
+
+```{r plot randomDensity}
+Di <- randomDensity(grid144mask,  parm = parm1, plt = TRUE, border = 1, 
+	breaks = c(0,10,10000), col=c('grey','white'), legend = FALSE)
+pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
+plot(pop, add = TRUE, frame = FALSE)
+```
+Fig. 1. Realisation of random habitat mosaic from `randomDensity` (white) with one point simulation.
 
 ## `randomGaussian`
 
-Log-gaussian Cox process
+This function generates an intensity surface as a log-gaussian random field using RFsimulate from the RandomFields package (Schlather et al. 2015).
+
+Parameter 'var' is the variance of *in situ* log intensity. Mean log intensity ($\mu$) is computed as log(D) - var/2.
+
+Parameter 'scale' is the spatial scale of the exponential covariance function.
+
+```{r plot randomGaussian}
+parm2 <- list(D = D, var = 0.25, scale = 5)
+Di <- randomGaussian(grid144mask,  parm = parm2, plt = TRUE, border = 1)
+pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
+plot(pop, add = TRUE, frame = FALSE)
+```
+Fig. 2. Realisation of log-gaussian density surface from `randomGaussian` with one point simulation.
 
 ## `randomParent`
 
-Intensity from distribution of parents for a realisation of the Thomas process.
+This function generates an intensity surface from the distribution of parents 
+for one realisation of a Thomas process. 
 
-```{r extra, eval = FALSE, echo = FALSE}
-RFS(randomfn = randomGaussian, nrepl = 1000, parm = list(D = 2844.44, var = 1, scale = 10))
-RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 1, scale = 2))
-RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 32, scale = 2))
-RFS(randomfn = randomParents,  nrepl = 1000, parm = list(D = 2844.44, mu = 2, scale = 0.001))
+Parameter 'mu' is the expected number of offspring per parent.
 
-RFS(randomfn = randomDensity,  nrepl = 1000, parm = list(D = 2844.44, A = 0.5, p = 0.5), ncores=10)
-RFS(randomfn = randomParents,  nrepl = 100, parm = list(D = 2844.44, mu = 2, scale = 0.001), ncores=10)
-RFS(randomfn = randomGaussian, nrepl = 1000, parm = list(D = 2844.44, var = 1, scale = 10), ncores=10)
+Parameter 'scale' is the spatial scale of the circular bivariate normal 
+scatter of offspring around the parent.
 
-randomParents(grid144mask, parm = list(D = 2844.44, mu = 32, scale = 2), plt=T, border = 1)
-randomGaussian(grid144mask, parm = list(D = 2844.44, var = 1, scale = 10), plt=T, border = 1)
+The surface is derived from the **spatstat** function `rThomas` with argument 'saveLambda = TRUE'.
 
-D <- randomDensity(grid144mask,  parm = list(D = 2844.44, A = 0.5, p = 0.5), plt=T, border = 1, 
-				   breaks=c(0,10,10000), col=c('grey','white'), legend=F)
-pop <- sim.popn(D=D, grid144mask, model2D='IHP')
-plot(pop, add=T, frame = FALSE)
-plot(grid144, add=T, detpar=list(cex=0.6,pch=16,fg='red'))
-
-round(cmat(nrepl=1000, ncores=10),1)
+```{r plot randomParents}
+parm3 <- list(D = D, mu = 8, scale = 2)
+Di <- randomParents(grid144mask,  parm = parm3, plt = TRUE, parentcex = 0.6,
+					border = 5)
+pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
+plot(pop, add = TRUE, frame = FALSE)
 ```
+Fig. 3. Realisation of density surface from `randomParents` with one point simulation. Parent locations are shown as filled dots.
 
 # Parameter combinations
 
