@@ -16,6 +16,7 @@ randomParents <- function (mask, parm, plt = FALSE, parentcex = 0, ...) {  # D, 
 		eps         = attr(mask,'spacing'),
 		rule.eps    = 'shrink.frame')    
 	df <- as.data.frame(attr(pts, "Lambda"))
+	df <- df[order(df[,2], df[,1]),]
 	parents <- as.data.frame(attr(pts, "parents"))
 	if (plt) {
 		covariates(mask)$Lambda <- df[,3] * 1e4
