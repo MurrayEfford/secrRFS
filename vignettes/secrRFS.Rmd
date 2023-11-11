@@ -40,11 +40,11 @@ area $A$) is not handled.
 
 The available generating processes are
 
-|Generating process|Source function| Parameters |
-|------------------|---------------|------------|
-Binary habitat mosaic | secr::randomHabitat | D, p, A
-Log-gaussian random field | RandomFields::RFsimulate | D, var, scale
-Thomas cluster process | spatstat.random::rThomas | D, mu, scale
+|Generating process|Source function| secrRFS function | Parameters |
+|------------------|---------------|------------|-------------|
+Binary habitat mosaic | secr::randomHabitat | randomDensity | D, p, A
+Log-gaussian random field | RandomFields::RFsimulate | randomGaussian | D, var, scale
+Thomas cluster process | spatstat.random::rThomas | randomParents | D, mu, scale
 
 **secrRFS** requires version 4.6.5 or later of package **secr** (Efford 2023). 
 Packages RandomFields (Schlather et al. 2015)[^footnote1] and spatstat 
@@ -118,6 +118,7 @@ Di <- randomDensity(grid144mask,  parm = parm1, plt = TRUE, border = 1,
 pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
 plot(pop, add = TRUE, frame = FALSE)
 ```
+
 Fig. 1. Realisation of random habitat mosaic from `randomDensity` (white) with one point simulation.
 
 ## `randomGaussian`
@@ -134,9 +135,10 @@ Di <- randomGaussian(grid144mask,  parm = parm2, plt = TRUE, border = 1)
 pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
 plot(pop, add = TRUE, frame = FALSE)
 ```
+
 Fig. 2. Realisation of log-gaussian density surface from `randomGaussian` with one point simulation.
 
-## `randomParent`
+## `randomParents`
 
 This function generates an intensity surface from the distribution of parents 
 for one realisation of a Thomas process. 
@@ -155,6 +157,7 @@ Di <- randomParents(grid144mask,  parm = parm3, plt = TRUE, parentcex = 0.6,
 pop <- sim.popn(D = Di, grid144mask, model2D = 'IHP')
 plot(pop, add = TRUE, frame = FALSE)
 ```
+
 Fig. 3. Realisation of density surface from `randomParents` with one point simulation. Parent locations are shown as filled dots.
 
 # Parameter combinations
