@@ -16,7 +16,7 @@ Functions to generate the intensity surface for one realisation of a Cox process
 
 randomDensity(mask, parm, plt = FALSE, ...)
 randomGaussian(mask, parm, plt = FALSE, ...)
-randomParents(mask, parm, plt = FALSE, ...)
+randomParents(mask, parm, plt = FALSE, parentcex = 0, ...)
 
 }
 
@@ -26,6 +26,7 @@ randomParents(mask, parm, plt = FALSE, ...)
   \item{parm}{list of parameter values (see Details)}
   \item{plt}{logical}
   \item{\dots}{other arguments passed to plot.mask when plt = TRUE}
+  \item{parentcex}{numeric}
 
 }
 
@@ -43,7 +44,7 @@ All functions generate a surface with expected global density `D'.
 
 \code{randomGaussian} generates a log-gaussian intensity surface with point-specific variance `var' and exponential covariance function with scale `scale'.
 
-\code{randomParents} generates an intensity surface from a Thomas process with `mu' expected offspring per parent and circular bivariate normal dispersion `scale' about each parent.
+\code{randomParents} generates an intensity surface from a Thomas process with `mu' expected offspring per parent and circular bivariate normal dispersion `scale' about each parent. Parent points are plotted if parentcex > 0.
 
 }
 

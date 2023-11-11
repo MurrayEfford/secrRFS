@@ -1,4 +1,4 @@
-randomParents <- function (mask, parm, plt = FALSE, ...) {  # D, mu, scale
+randomParents <- function (mask, parm, plt = FALSE, parentcex = 0, ...) {  # D, mu, scale
 	if (!(requireNamespace("spatstat"))) {
 		stop("install spatstat")
 	}
@@ -16,9 +16,11 @@ randomParents <- function (mask, parm, plt = FALSE, ...) {  # D, mu, scale
 		eps         = attr(mask,'spacing'),
 		rule.eps    = 'shrink.frame')    
 	df <- as.data.frame(attr(pts, "Lambda"))
+	parents <- as.data.frame(attr(pts, "parents"))
 	if (plt) {
 		covariates(mask)$Lambda <- df[,3] * 1e4
 		plot(mask, cov = 'Lambda', dots = FALSE, ...)
+		if (parentcex>0) points(parents, pch = 16, cex = parentcex)
 	}
 	df[,3] * 1e4
 }
