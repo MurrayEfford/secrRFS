@@ -21,6 +21,9 @@ Suggests:
     spatstat.random,
     RandomFields,
     testthat
-Additional_repositories: https://spatstat.r-universe.dev, https://cloud.r-project.org
+Additional_repositories: 
+    https://spatstat.r-universe.dev, 
+    https://cloud.r-project.org, 
+    https://otago.ac.nz/density/zip
 VignetteBuilder: knitr, rmarkdown
 License: GPL (>= 2)
