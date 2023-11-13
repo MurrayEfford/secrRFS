@@ -51,7 +51,9 @@ Either a scalar estimate of overdispersion (\eqn{c}) or a list including
 
 \references{
 
-Efford, M. G. and Fletcher, D. J. unpubl. Spatial overdispersion impacts confidence intervals for population density estimated by spatially explicit capture--recapture.
+Efford, M. G. and Fletcher, D. J. unpubl. The effect of spatial overdispersion 
+on confidence intervals for population density estimated by spatially explicit 
+capture--recapture.
 
 }
 

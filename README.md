@@ -23,8 +23,9 @@ Baddeley, A. and Turner, R. (2005) spatstat: An R package for analyzing spatial 
 Efford, M. G. (2023) secr: Spatially explicit capture--recapture models. 
   R package version 4.6.5. https://github.com/MurrayEfford/secr
 
-Efford, M. G. and Fletcher, D. J. unpubl. Spatial overdispersion impacts 
-confidence intervals for population density estimated by spatially explicit capture--recapture.
+Efford, M. G. and Fletcher, D. J. unpubl. The effect of spatial overdispersion 
+on confidence intervals for population density estimated by spatially explicit 
+capture--recapture.
 
 Moller, J. and Waagepetersen, R. P. (2004) Statistical inference and 
 simulation for spatial point processes. Chapman & Hall/CRC.

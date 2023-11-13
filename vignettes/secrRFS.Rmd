@@ -189,6 +189,11 @@ Borchers, D. L. and Efford, M. G. (2008) Spatially explicit maximum likelihood m
 Efford, M. G. (2023). secr: Spatially explicit capture--recapture models. R package version
   4.6.5. https://CRAN.R-project.org/package=secr/
   
+
+Efford, M. G. and Fletcher, D. J. unpubl. The effect of spatial overdispersion 
+on confidence intervals for population density estimated by spatially explicit 
+capture--recapture.
+  
 M\o ller, J., and Waagepetersen, R. P. (2004) Statistical inference and simulation for spatial point processes. Chapman & Hall/CRC.
 
 Saura, S. and Martinez-Millan, J. (2000) Landscape patterns simulation
