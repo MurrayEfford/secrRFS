@@ -10,7 +10,7 @@ randomDensity <- function (mask, parm, plt = FALSE, ...)
 						minpatch = 1, plt = FALSE, seed = NULL, 
 						rescale = TRUE,
 						maskscale = FALSE)
-	if (is.null(parm$D)) stop ("myRandomHabitat requires D to be specified")
+	if (is.null(parm$D)) stop ("randomDensity requires D to be specified")
 	parm     <- replace(defaultparm, names(parm), parm)
 	userargs <- c("p", "A", "directions", "minpatch", "plt", "seed")
 	tempmask <- do.call(secr::randomHabitat, 

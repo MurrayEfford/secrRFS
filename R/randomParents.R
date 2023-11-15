@@ -2,6 +2,12 @@ randomParents <- function (mask, parm, plt = FALSE, parentcex = 0, ...) {  # D, 
 	if (!(requireNamespace("spatstat"))) {
 		stop("install spatstat")
 	}
+	defaultparm <- list(D = NULL, mu = NULL, scale = NULL, maskscale = FALSE)
+	if (is.null(parm$D)) stop ("randomParents requires D to be specified")
+	if (is.null(parm$mu)) stop ("randomParents requires mu to be specified")
+	if (is.null(parm$scale)) stop ("randomParents requires scale to be specified")
+	parm     <- replace(defaultparm, names(parm), parm)
+	
 	kappa <- parm$D/1e4/parm$mu   # parent mean density / m^2
 	bbox <- attr(mask, 'boundingbox')
 	ow <- spatstat.geom::owin(range(bbox$x), range(bbox$y))  

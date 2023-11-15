@@ -4,11 +4,14 @@ randomGaussian <- function (mask, parm, plt = FALSE, ...)
 		stop("install RandomFields")
 	}
 	defaultparm <- list(
-		var = 1, 
-		scale = 1, 
+		var = NULL, 
+		scale = NULL, 
 		model = 'exp', 
-		D = 2844.44,
+		D = NULL,
 		maskscale = FALSE)
+	if (is.null(parm$D)) stop ("randomGaussian requires D to be specified")
+	if (is.null(parm$var)) stop ("randomGaussian requires var to be specified")
+	if (is.null(parm$scale)) stop ("randomGaussian requires scale to be specified")
 	parm <- replace(defaultparm, names(parm), parm)
 	mu <- log(parm$D) - parm$var/2
 	model <- match.arg(parm$model[1], c('exp','gauss'))
