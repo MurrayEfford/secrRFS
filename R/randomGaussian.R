@@ -8,7 +8,7 @@ randomGaussian <- function (mask, parm, plt = FALSE, ...)
 		scale = 1, 
 		model = 'exp', 
 		D = 2844.44,
-		fixed = TRUE)
+		maskscale = FALSE)
 	parm <- replace(defaultparm, names(parm), parm)
 	mu <- log(parm$D) - parm$var/2
 	model <- match.arg(parm$model[1], c('exp','gauss'))
@@ -21,12 +21,17 @@ randomGaussian <- function (mask, parm, plt = FALSE, ...)
 		stop("unknown model")
 	model <- model + RandomFields::RMtrend(mean = mu)
 	rf <- RandomFields::RFsimulate(model, x = as.matrix(mask))@data[,1]
-	D  <- exp(rf)
+	Lambda  <- exp(rf)
+	if (parm$maskscale) {
+		# conditional on N(A)
+		N <- parm$D * maskarea(mask)
+		Lambda <- Lambda * N / sum(Lambda)
+	}
 	if (plt) {
-		covariates(mask)$Lambda <- D
+		covariates(mask)$Lambda <- Lambda
 		plot(mask, cov = 'Lambda', dots = FALSE, ...)
 	}
-	return(D)   # vector of cell-specific densities
+	return(Lambda)   # vector of cell-specific densities
 }
 ################################################################################
 

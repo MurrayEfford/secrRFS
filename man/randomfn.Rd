@@ -46,6 +46,8 @@ All functions generate a surface with expected global density `D'.
 
 \code{randomParents} generates an intensity surface from a Thomas process with `mu' expected offspring per parent and circular bivariate normal dispersion `scale' about each parent. Parent points are plotted if parentcex > 0.
 
+The `parm' argument can include maskscale = TRUE to adjust the expected number within the mask (area A) to equal DA (default maskscale = FALSE).
+
 }
 
 \value{

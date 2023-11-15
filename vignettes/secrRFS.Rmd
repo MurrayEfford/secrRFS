@@ -179,6 +179,30 @@ ca <- carray (parmlevels, RFSargs)
 round(ca,1)
 ```
 
+# Scaling to constant $\E {N(A)}$
+
+The parameter list for `randomDensity` and `randomGaussian` includes the component `maskscale`. When this is set to TRUE the intensity surface is scaled to provide a constant expected number within the area of `mask`. The default is `maskscale = FALSE`.
+
+Scaling can have a large effect on $c$. For example, with `randomDensity`
+
+```{r maskscale, cache = TRUE}
+
+parmlevels <- list(D = D, p = c(0.25,0.5), A = c(0.0625,0.125,0.25,0.5,0.75,1), 
+				   maskscale = c(FALSE,TRUE))
+RFSargs <- list (
+	randomfn   = randomDensity, 
+	nrepl      = 1000, 
+	traps      = grid144, 
+	mask       = grid144mask, 
+	detectfn   = 'HHN', 
+	detectpar  = detectpar, 
+	noccasions = 5)
+ca <- carray (parmlevels, RFSargs)
+round(ca,1)
+```
+
+
+
 # References
 
 Baddeley, A. and Turner, R. (2005) spatstat: An R package for analyzing spatial point

@@ -17,14 +17,18 @@ randomParents <- function (mask, parm, plt = FALSE, parentcex = 0, ...) {  # D, 
 		rule.eps    = 'shrink.frame')    
 	df <- as.data.frame(attr(pts, "Lambda"))
 	# re-order y then x for correct overlay
-	df <- df[order(df[,2], df[,1]),]
+	Lambda <- df[order(df[,2], df[,1]),3] * 1e4
+	if (parm$maskscale) {
+		N <- parm$D * maskarea(mask)
+		Lambda <- Lambda * N / sum(df)
+	}
 	parents <- as.data.frame(attr(pts, "parents"))
 	if (plt) {
-		covariates(mask)$Lambda <- df[,3] * 1e4
+		covariates(mask)$Lambda <- Lambda
 		plot(mask, cov = 'Lambda', dots = FALSE, ...)
 		if (parentcex>0) points(parents, pch = 16, cex = parentcex)
 	}
-	df[,3] * 1e4
+	Lambda
 }
 ################################################################################
 
