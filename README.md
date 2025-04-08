@@ -30,7 +30,7 @@ Efford, M. G. (2025) secr: Spatially explicit capture--recapture models.
 
 Efford, M. G. and Fletcher, D. (2024) The effect of spatial overdispersion 
 on confidence intervals for population density estimated by spatially explicit 
-capture--recapture. *bioRxiv* \doi{10.1101/2024.03.12.584742}
+capture--recapture. *bioRxiv* DOI: 10.1101/2024.03.12.584742
 
 Moller, J. and Waagepetersen, R. P. (2004) Statistical inference and 
 simulation for spatial point processes. Chapman & Hall/CRC.
