@@ -59,6 +59,7 @@ capture--recapture.
 
 \seealso{
 
+\code{\link{carray}},
 \code{\link{parallel-package}}
 
 }

@@ -12,7 +12,8 @@ RFS <- function (randomfn = randomDensity,
 				 seed = NULL) {
 	ncores <- setNumThreads(ncores)
 	pd <- pdot(mask, traps, detectfn, detectpar, noccasions)
-	En <- sum(pd) * attr(mask, 'area') * parm$D
+	a <- sum(pd) * attr(mask, 'area')
+	En <- a * parm$D
 	one <- function (r, randomfn, mask, parm, pd) {
 		D <- randomfn(mask, parm)
 		sum(pd * D) / sum(pd) 
@@ -28,11 +29,14 @@ RFS <- function (randomfn = randomDensity,
 		set.seed(seed)
 		localD <- sapply(1:nrepl, one, randomfn, mask, parm, pd)
 	}
+	c <- a * var(localD) / mean(localD) + 1 
+	
 	if (verbose) {
-		list(parm = unlist(parm), localD = localD, c = En * CV(localD)^2 + 1)
+		list(parm = unlist(parm), detectpar = detectpar, detectfn = detectfn, 
+			 noccasions = noccasions, a = a, localD = localD, c = c)
 	}
 	else {
-		En * CV(localD)^2 + 1
+		c
 	}
 }
 ################################################################################

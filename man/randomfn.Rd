@@ -34,8 +34,8 @@ randomParents(mask, parm, plt = FALSE, parentcex = 0, ...)
 
 \tabular{llll}{
 randomDensity  \tab secr            \tab \link{randomHabitat} \tab D, A, p \cr
-randomGaussian \tab RandomFields    \tab RFsimulate    \tab D, var, scale \cr
-randomPoisson  \tab spatstat.random \tab rThomas       \tab D, mu, scale \cr 
+randomGaussian \tab spatstat.random \tab rLGCP    \tab D, var, scale \cr
+randomParents  \tab spatstat.random \tab rThomas       \tab D, mu, scale \cr 
 }
 
 All functions generate a surface with expected global density `D'.
@@ -76,9 +76,18 @@ grid144 <- make.grid(12,12, detector='proximity', spacing = 2.0)
 grid144mask <- make.mask(grid144, spacing = 0.5, buffer = 4)
 D <- 256/maskarea(grid144mask)
 
+# random habitat
 parm <- list(D = D, A = 0.5, p = 0.5, rescale = TRUE)
 Di <- randomDensity(grid144mask, parm)
 # non-habitat cells have density = 0
 table(Di)
+
+# Gaussian
+parm <- list(D = D, var = 0.5, scale = 5)
+randomGaussian(grid144mask, parm, plt = TRUE, border = 1)
+
+# Thomas process
+parm <- list(D = D, mu = 10, scale = 3)
+randomParents(grid144mask, parm, plt = TRUE, border = 1, parentcex = 0.5)
 
 }

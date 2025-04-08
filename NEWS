@@ -1,3 +1,8 @@
+Changes in version 1.0.0 (2025-04-08)
+
+New features or changed behaviour of old functions
+    o   uses spatstat rLGCP instead of RandomFields
+    
 Changes in version 0.0.0 (2023-11-11)
 
 New features or changed behaviour of old functions

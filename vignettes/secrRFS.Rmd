@@ -42,18 +42,12 @@ The available generating processes are
 
 |Generating process|Source function| secrRFS function | Parameters |
 |------------------|---------------|------------|-------------|
-Binary habitat mosaic | secr::randomHabitat | randomDensity | D, p, A
-Log-gaussian random field | RandomFields::RFsimulate | randomGaussian | D, var, scale
+Binary habitat mosaic | secr::randomHabitat | randomDensity | D, p, A, rescale
+Log-gaussian random field | spatstat.random::rLGCP | randomGaussian | D, var, scale
 Thomas cluster process | spatstat.random::rThomas | randomParents | D, mu, scale
 
-**secrRFS** requires version 4.6.5 or later of package **secr** (Efford 2023). 
-Packages RandomFields (Schlather et al. 2015)[^footnote1] and spatstat 
-(Baddeley and Turner 2005) are required respectively for  the log-gaussian 
-and Thomas process options.
-
-[^footnote1]:Package RandomFields is not currently on CRAN. It may be installed with this code:
-`install.packages("RandomFields", repos = c("https://spatstat.r-universe.dev", 
-   "https://cloud.r-project.org"))`
+**secrRFS** requires version 4.6.5 or later of package **secr** (Efford 2025). 
+Package spatstat is required for  the log-gaussian and Thomas process options.
 
 # Theory
 
@@ -65,7 +59,7 @@ where $D(\vec x)$ is the intensity at $\vec x$ of one realisation and $p_\cdot(\
 
 Values of $D_a$ are simulated by generating multiple realisations of $D(\vec x)$.
 
-Overdispersion is estimated as $c = \mbox{E}(n) \, \mbox{CV}^2(D_a) + 1.$
+Overdispersion is estimated as $c = 1 + a(\theta) \mbox{var}(D_a) / \mbox E(D_a).$
 
 # Simple example
 
@@ -123,7 +117,7 @@ Fig. 1. Realisation of random habitat mosaic from `randomDensity` (white) with o
 
 ## `randomGaussian`
 
-This function generates an intensity surface as a log-gaussian random field using RFsimulate from the RandomFields package (Schlather et al. 2015).
+This function generates an intensity surface as a log-gaussian random field using rLGCP in the spatstat package.
 
 Parameter 'var' is the variance of *in situ* log intensity. Mean log intensity ($\mu$) is computed as log(D) - var/2.
 
@@ -221,8 +215,6 @@ Saura, S. and Martinez-Millan, J. (2000) Landscape patterns simulation
 with a modified random clusters method. *Landscape Ecology*,
 **15**, 661--678.
 
-Schlather, M., Malinowski, A., Menck, P. J., Oesting, M. and Strokorb, K. 2015. Analysis, simulation and prediction of multivariate random fields with package RandomFields. *Journal of Statistical Software*, **63**, 1--25. URL https://www.jstatsoft.org/v63/i08/.
-  
 [secr-manual.pdf]: https://www.otago.ac.nz/density/pdfs/secr-manual.pdf
 [secr-overview.pdf]: https://www.otago.ac.nz/density/pdfs/secr-overview.pdf
 [secr-datainput.pdf]: https://www.otago.ac.nz/density/pdfs/secr-datainput.pdf

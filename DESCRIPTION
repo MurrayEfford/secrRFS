@@ -1,8 +1,8 @@
 Package: secrRFS
 Type: Package
 Title: Spatially Explicit Capture-Recapture Random Field Simulator
-Version: 0.0.0
-Date: 2023-11-11
+Version: 1.0.0
+Date: 2025-04-08
 Description: SECR random field simulator.
 Authors@R: person("Murray", "Efford", 
     email = "murray.efford@otago.ac.nz", 
@@ -19,7 +19,6 @@ Suggests:
     spatstat (>= 3.0-2),
     spatstat.geom,
     spatstat.random,
-    RandomFields,
     testthat
 Additional_repositories: 
     https://spatstat.r-universe.dev, 

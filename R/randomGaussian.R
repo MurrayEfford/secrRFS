@@ -1,30 +1,40 @@
 randomGaussian <- function (mask, parm, plt = FALSE, ...) 
 {
-	if (!(requireNamespace("RandomFields"))) {
-		stop("install RandomFields")
+	if (!(requireNamespace("spatstat"))) {
+		stop("install spatstat")
 	}
 	defaultparm <- list(
-		var = NULL, 
-		scale = NULL, 
-		model = 'exp', 
-		D = NULL,
+		model     = 'exponential',    # negative exponential autocorrelation
+		var       = NULL, 
+		scale     = NULL, 
+		D         = NULL,
+		n.cond    = NULL,             # Poisson n
 		maskscale = FALSE)
+	
 	if (is.null(parm$D)) stop ("randomGaussian requires D to be specified")
 	if (is.null(parm$var)) stop ("randomGaussian requires var to be specified")
 	if (is.null(parm$scale)) stop ("randomGaussian requires scale to be specified")
+	
 	parm <- replace(defaultparm, names(parm), parm)
-	mu <- log(parm$D) - parm$var/2
-	model <- match.arg(parm$model[1], c('exp','gauss'))
-	# default is negative exponential autocorrelation
-	if (model == 'exp')
-		model <- RandomFields::RMexp(var = parm$var, scale = parm$scale)   
-	else if (model == 'gauss')
-		model <- RandomFields::RMgauss(var = parm$var, scale = parm$scale) 
-	else
-		stop("unknown model")
-	model <- model + RandomFields::RMtrend(mean = mu)
-	rf <- RandomFields::RFsimulate(model, x = as.matrix(mask))@data[,1]
-	Lambda  <- exp(rf)
+	mu <- log(parm$D/1e4) - parm$var/2
+	model <- match.arg(parm$model[1], c('exponential','gauss'))
+	
+	bbox <- attr(mask, 'boundingbox')
+	ow <- spatstat.geom::owin(range(bbox$x), range(bbox$y))  
+	pts <- spatstat.random::rLGCP(
+		model      = model,
+		mu         = mu,
+		var        = parm$var,
+		scale      = parm$scale,
+		n.cond     = parm$n.cond,
+		win        = ow,
+		saveLambda = TRUE,
+		eps        = attr(mask,'spacing'),
+		rule.eps   = 'shrink.frame')
+	
+	df <- as.data.frame(attr(pts, "Lambda"))
+	# re-order y then x for correct overlay
+	Lambda <- df[order(df[,2], df[,1]),3] * 1e4
 	if (parm$maskscale) {
 		# conditional on N(A)
 		N <- parm$D * maskarea(mask)
