@@ -68,21 +68,24 @@ capture--recapture.
 
 \examples{
 
-detectpar = list(lambda0 = 0.5, sigma = 1)
+detectpar <- list(lambda0 = 0.5, sigma = 1)
 grid144 <- make.grid(12,12, detector='proximity', spacing = 2.0)
 grid144mask <- make.mask(grid144, spacing = 0.5, buffer = 4)
 D <- 256/maskarea(grid144mask)
+
+\donttest{
 
 parm1 <- list(D = D, A = 0.5, p = 0.5)
 RFS(randomDensity, parm1, 1000, grid144, grid144mask, 'HHN', 
     detectpar, 5, ncores = 18)
 
-parm2 <- list(D = D, V = 1, scale = 5)
+parm2 <- list(D = D, var = 1, scale = 5)
 RFS(randomGaussian, parm2, 1000, grid144, grid144mask, 'HHN', 
     detectpar, 5, ncores = 18)
 
 parm3 <- list(D = D, mu = 8, scale = 2)
 RFS(randomParents, parm3, 1000, grid144, grid144mask, 'HHN', 
     detectpar, 5, ncores = 18)
+}
 
 }
