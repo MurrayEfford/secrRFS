@@ -177,9 +177,9 @@ round(ca,1)
 
 The parameter list for each generating function includes the component `maskscale`. When this is set to TRUE the intensity surface is scaled to provide a constant expected number within the area of `mask`. The default is `maskscale = FALSE`. For `randomParents` the implied effect is to scale the expected number of offspring per parent $\mu$ to keep $\mbox{E}[N(A)]$ constant.
 
-Scaling can have a large effect on $c$. For example, with `randomDensity`
+Scaling can have a large effect on $c$. Here is an example with `randomDensity` (not run).
 
-```{r maskscale, cache = TRUE}
+```{r maskscale, eval = FALSE}
 parmlevels <- list(D = D, p = c(0.25,0.5), A = c(0.0625,0.125,0.25,0.5,0.75,1), 
 				   maskscale = c(FALSE,TRUE))
 RFSargs <- list (
