@@ -8,7 +8,7 @@ randomGaussian <- function (mask, parm, plt = FALSE, ...)
 		var       = NULL, 
 		scale     = NULL, 
 		D         = NULL,
-		n.cond    = NULL,             # Poisson n
+		# n.cond    = NULL,             # Poisson n
 		maskscale = FALSE)
 	
 	if (is.null(parm$D)) stop ("randomGaussian requires D to be specified")
@@ -26,7 +26,7 @@ randomGaussian <- function (mask, parm, plt = FALSE, ...)
 		mu         = mu,
 		var        = parm$var,
 		scale      = parm$scale,
-		n.cond     = parm$n.cond,
+		# n.cond     = parm$n.cond,
 		win        = ow,
 		saveLambda = TRUE,
 		eps        = attr(mask,'spacing'),
