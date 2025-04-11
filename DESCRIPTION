@@ -19,7 +19,7 @@ Suggests:
     rmarkdown, 
     spatstat (>= 3.0-2),
     spatstat.geom,
-    spatstat.random (>= 3.3.3002),
+    spatstat.random,
     testthat
 Additional_repositories: 
     https://spatstat.r-universe.dev
