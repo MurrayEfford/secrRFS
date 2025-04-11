@@ -3,6 +3,9 @@
 import (parallel)
 import (secr)
 
+importFrom("graphics", "lines", "points")
+importFrom("stats", "var")
+  
 export (RFS)
 export (carray)
 export (randomDensity)
