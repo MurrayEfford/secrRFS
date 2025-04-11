@@ -14,6 +14,7 @@ Depends:
 Imports:
     parallel
 Suggests:
+    igraph,
     knitr, 
     rmarkdown, 
     spatstat (>= 3.0-2),
@@ -21,8 +22,6 @@ Suggests:
     spatstat.random,
     testthat
 Additional_repositories: 
-    https://spatstat.r-universe.dev, 
-    https://cloud.r-project.org, 
-    https://otago.ac.nz/density/zip
+    https://spatstat.r-universe.dev
 VignetteBuilder: knitr, rmarkdown
 License: GPL (>= 2)
