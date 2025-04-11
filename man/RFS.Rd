@@ -75,17 +75,19 @@ D <- 256/maskarea(grid144mask)
 
 \donttest{
 
+nrepl <- 100  # increase to 1000 for serious use
+
 parm1 <- list(D = D, A = 0.5, p = 0.5)
-RFS(randomDensity, parm1, 1000, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 18)
+RFS(randomDensity, parm1, nrepl, grid144, grid144mask, 'HHN', 
+    detectpar, 5, ncores = 2)
 
 parm2 <- list(D = D, var = 1, scale = 5)
-RFS(randomGaussian, parm2, 1000, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 18)
+RFS(randomGaussian, parm2, nrepl, grid144, grid144mask, 'HHN', 
+    detectpar, 5, ncores = 2)
 
 parm3 <- list(D = D, mu = 8, scale = 2)
-RFS(randomParents, parm3, 1000, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 18)
+RFS(randomParents, parm3, nrepl, grid144, grid144mask, 'HHN', 
+    detectpar, 5, ncores = 2)
 }
 
 }
