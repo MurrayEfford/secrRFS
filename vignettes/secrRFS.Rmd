@@ -67,7 +67,7 @@ See [here](https://www.otago.ac.nz/density/pdfs/secr-overview.pdf) for an overvi
 
 ```{r setup, message = FALSE, results = 'hide'}
 library(secrRFS)
-setNumThreads(4)   # adjust to number of available cores
+setNumThreads(2)   # adjust to number of available cores
 ```
 
 ```{r data}
