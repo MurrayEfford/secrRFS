@@ -67,7 +67,7 @@ RFSargs <- list (
     detectfn   = 'HHN', 
 	detectpar  = detectpar, 
     noccasions = 5, 
-	ncores     = 18)
+	ncores     = 2)
 ca <- carray (parmlevels, RFSargs)
 round(ca,1)
 #     scale
