@@ -77,7 +77,7 @@ grid144mask <- make.mask(grid144, spacing = 0.5, buffer = 4)
 D <- 256/maskarea(grid144mask)
 ```
 
-```{r initial, eval = TRUE, cache = TRUE}
+```{r initial, eval = TRUE}
 parm1 <- list(D = D, A = 0.5, p = 0.5)
 RFS(
 	randomfn   = randomDensity,  
@@ -159,7 +159,7 @@ Fig. 3. Realisation of density surface from `randomParents` with one point simul
 The function `carray` makes it easy to see how varying parameters of the Cox 
 process affect overdispersion.
 
-```{r combinations, eval = TRUE, cache = TRUE}
+```{r combinations, eval = TRUE}
 parmlevels <- list(D = D, mu = 2^(0:5), scale = c(1e-04, 1, 2, 4, 8))
 RFSargs <- list (
     randomfn   = randomParents, 
