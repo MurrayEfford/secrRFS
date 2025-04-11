@@ -205,10 +205,8 @@ Efford, M. G. (2023). secr: Spatially explicit capture--recapture models. R pack
   4.6.5. https://CRAN.R-project.org/package=secr/
   
 
-Efford, M. G. and Fletcher, D. J. unpubl. The effect of spatial overdispersion 
-on confidence intervals for population density estimated by spatially explicit 
-capture--recapture.
-  
+Efford, M. G. and Fletcher, D. (2024)  The effect of spatial overdispersion on confidence intervals for population density estimated by spatially explicit capture--recapture. bioRxiv https://doi.org/10.1101/2024.03.12.584742.
+
 M\o ller, J., and Waagepetersen, R. P. (2004) Statistical inference and simulation for spatial point processes. Chapman & Hall/CRC.
 
 Saura, S. and Martinez-Millan, J. (2000) Landscape patterns simulation

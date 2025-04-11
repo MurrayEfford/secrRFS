@@ -9,7 +9,7 @@
 \description{
 
   Functions to estimate the overdispersion of number detected \eqn{n} by simulating intensity
-  surfaces (Efford and Fletcher unpubl.).
+  surfaces (Efford and Fletcher 2024).
   
 }
 
@@ -19,7 +19,7 @@
 Package: \tab secrRFS\cr
 Type: \tab Package\cr
 Version: \tab 0.0.0\cr
-Date: \tab 2023-11-11\cr
+Date: \tab 2025-04-12\cr
 License: \tab GNU General Public License Version 2 or later\cr
 }
 
@@ -34,12 +34,12 @@ worker processes on multiple cores (see \link{Parallel} for more).
 
 \references{
 
-Efford, M. G. (2023) secr: Spatially explicit capture--recapture models. 
-  R package version 4.6.5. https://CRAN.R-project.org/package=secr/
+Efford, M. G. (2025) secr: Spatially explicit capture--recapture models. 
+  R package version 5.2.1. https://CRAN.R-project.org/package=secr/
 
-Efford, M. G. and Fletcher, D. J. unpubl. The effect of spatial overdispersion 
+Efford, M. G. and Fletcher, D. (2024)  The effect of spatial overdispersion 
 on confidence intervals for population density estimated by spatially explicit 
-capture--recapture.
+capture--recapture. \emph{bioRxiv} https://doi.org/10.1101/2024.03.12.584742.
 
 }
 
