@@ -8,7 +8,7 @@
 \usage{
 
 RFS(randomfn = randomDensity, parm = list(), nrepl = 2, traps, mask, 
-detectfn = "HHN", detectpar, noccasions, verbose = FALSE, ncores = NULL, 
+detectfn = "HHN", detectpar, noccasions, verbose = FALSE, 
 seed = NULL)
 
 }
@@ -23,18 +23,12 @@ seed = NULL)
   \item{detectpar}{list of detection parameter values}
   \item{noccasions}{integer number of sampling occasions}
   \item{verbose}{logical}
-  \item{ncores}{integer number of cores for parallel processing}
   \item{seed}{optional seed}
 }
 
 \details{
 
 `randomfn' should be one \code{\link{randomDensity}}, \code{\link{randomGaussian}}, \code{\link{randomParents}}. The required parameters (list `parm') are specific to each `randomfn'.
-
-`ncores' > 1 causes simulations to be distributed over multiple cores using the \code{parallel} package.
-
-If `ncores = NULL` then the number of cores will be taken from the environment variable  RCPP_PARALLEL_NUM_THREADS (although Rcpp is not used). If you provide a value for `ncores' 
-then it will be used by \code{\link{setNumThreads}} to reset the environment variable.
 
 See the vignette for an extended description (type `vignette('secrRFS')` after loading package).
 
@@ -79,15 +73,15 @@ nrepl <- 100  # increase to 1000 for serious use
 
 parm1 <- list(D = D, A = 0.5, p = 0.5)
 RFS(randomDensity, parm1, nrepl, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 2)
+    detectpar, 5)
 
 parm2 <- list(D = D, var = 1, scale = 5)
 RFS(randomGaussian, parm2, nrepl, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 2)
+    detectpar, 5)
 
 parm3 <- list(D = D, mu = 8, scale = 2)
 RFS(randomParents, parm3, nrepl, grid144, grid144mask, 'HHN', 
-    detectpar, 5, ncores = 2)
+    detectpar, 5)
 }
 
 }

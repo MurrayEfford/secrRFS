@@ -25,9 +25,6 @@ License: \tab GNU General Public License Version 2 or later\cr
 
 See the vignette for an extended description (type `vignette('secrRFS')` after loading package).
 
-If \code{ncores > 1} the \pkg{parallel} package is used to create
-worker processes on multiple cores (see \link{Parallel} for more). 
-
 }
 
 \author{ Murray Efford \email{murray.efford@otago.ac.nz} }
