@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-^secrRFS.Rproj$
+secrRFS.Rproj
 ^.*\.Rproj$
 extra
